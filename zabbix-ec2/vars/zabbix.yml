@@ -1,0 +1,20 @@
+# Vars to setup zabbix
+
+zabbix_version: 2
+threads: 2
+
+ntp_server: 0.centos.pool.ntp.org
+mysql_nic: eth0
+node_nic: eth0
+master_nic: eth0
+
+mysql_username: zabbix
+mysql_password: zabbix
+mysql_database: zabbix_db
+
+front_php_timezone: "Europe/London"
+front_php_post_max_size: "32M"
+front_php_max_execution_time: "600"
+front_php_max_input_time: "600"
+
+zabbix_master_name: zabbix-master

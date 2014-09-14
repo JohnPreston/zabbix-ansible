@@ -1,0 +1,7 @@
+# Handlers
+
+- name: restart zabbixa
+  service: name=zabbix-agentd state=restarted
+
+- name: restart zabbix
+  service: name=zabbix-agent state=restarted

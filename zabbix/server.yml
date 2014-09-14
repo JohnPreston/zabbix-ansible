@@ -1,0 +1,33 @@
+# Setup Zabbix from scratch
+
+- hosts: zabbix-master
+  vars_files:
+  - vars/main.yml
+  roles:
+  - common-db
+
+- hosts: mysql-server
+  vars_files:
+  - vars/main.yml
+  roles:
+  - common-db
+  - db
+
+- hosts: zabbix-master
+  vars_files:
+  - vars/main.yml
+  roles:
+  - master
+
+- hosts: zabbix-frontend
+  vars_files:
+  - vars/main.yml
+  roles:
+  - frontend
+
+- hosts: zabbix-hosts
+  vars_files:
+  - vars/main.yml
+  roles:
+  - common
+  - hosts

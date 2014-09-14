@@ -1,0 +1,63 @@
+# Sets the ec2 security group
+
+- name: Creates the Zabbix-Frontend SG
+  local_action:
+    module: ec2_group
+    name: "{{ zabbix_frontend_sg_name }}"
+    description: "{{ zabbix_frontend_sg_desc }}"
+    ec2_url: "{{ ec2_url }}"
+    ec2_secret_key: "{{ ec2_secret_key }}"
+    ec2_access_key: "{{ ec2_access_key }}"
+    rules:
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: "{{ global_ssh_cidr }}"
+
+- name: Creates the Zabbix-Master security group
+  local_action:
+    module: ec2_group
+    name: "{{ zabbix_master_sg_name }}"
+    description: "{{ zabbix_master_sg_desc }}"
+    ec2_url: "{{ ec2_url }}"
+    ec2_secret_key: "{{ ec2_secret_key }}"
+    ec2_access_key: "{{ ec2_access_key }}"
+    rules:
+      - proto: udp
+        from_port: "{{ zabbix_master_port_from }}"
+        to_port: "{{ zabbix_master_port_to }}"
+        cidr_ip: "{{ zabbix_master_cidr }}"
+      - proto: tcp
+        from_port: "{{ zabbix_master_port_from }}"
+        to_port: "{{ zabbix_master_port_to }}"
+        cidr_ip: "{{ zabbix_master_cidr }}"
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: "{{ global_ssh_cidr }}"
+
+- name: Creates the MySQL SG for Zabbix usage
+  local_action:
+    module: ec2_group
+    name: "{{ zabbix_mysql_sg_name }}"
+    description: "{{ zabbix_mysql_sg_desc }}"
+    ec2_url: "{{ ec2_url }}"
+    ec2_secret_key: "{{ ec2_secret_key }}"
+    ec2_access_key: "{{ ec2_access_key }}"
+    rules:
+      - proto: tcp
+        from_port: 3306
+        to_port: 3306
+        group_name: "{{ zabbix_master_sg_name }}"
+      - proto: tcp
+        from_port: 3306
+        to_port: 3306
+        group_name: "{{ zabbix_frontend_sg_name }}"
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: "{{ global_ssh_cidr }}"

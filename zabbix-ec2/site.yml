@@ -1,0 +1,36 @@
+# Deploy ec2 against EC2
+
+- hosts: localhost
+  connection: local
+  vars_files:
+  - vars/main.yml
+  roles:
+  - ec2security
+  - ec2instances
+
+- hosts: ec2_mysql
+  vars_files:
+  - vars/main.yml
+  - vars/zabbix.yml
+  roles:
+  - common-db
+  - common
+  - db
+
+- hosts: ec2_zmaster
+  vars_files:
+  - vars/main.yml
+  - vars/zabbix.yml
+  roles:
+  - common-db
+  - common
+  - master
+
+- hosts: ec2_zfront
+  vars_files:
+  - vars/main.yml
+  - vars/zabbix.yml
+  roles:
+  - common
+  - frontend
+

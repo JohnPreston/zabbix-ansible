@@ -1,0 +1,43 @@
+ec2_access_key: AKIKDGWN2VQCUYIUPROS
+ec2_secret_key: YoKPoeCAYwrIapOe9IEAP9qM8nX9wLSXqN60JxRZ
+ec2_url: http://10.104.10.30:8773/services/Eucalyptus
+ec2_region: az01
+
+ssh_key: john
+ssh_delay: 30
+ssh_timeout: 120
+
+# Zabbix master SG
+zabbix_master_sg_name: zabbix-master
+zabbix_master_sg_desc: Zabbix Master SG
+
+# Zabbix mysql backend 
+zabbix_mysql_sg_name: zabbix-db
+zabbix_mysql_sg_desc: Zabbix DB SG
+
+# Zabbix Frontend server
+zabbix_frontend_sg_name: zabbix-front
+zabbix_frontend_sg_desc: Zabbix Frontend SG
+
+# Zabbix app ports
+zabbix_master_port_from: 10050
+zabbix_master_port_to: 10051
+zabbix_master_cidr: 0.0.0.0/0
+
+# If you have a specific IP from which you will run the Ansible playbook, replace it with yours
+global_ssh_cidr: 0.0.0.0/0
+
+# MySQL Instance settings
+mysql_az: az01
+mysql_emi: emi-A4503753
+mysql_instance_type: m1.medium
+
+# Zabbix Master instance settings
+zmaster_az: az01
+zmaster_emi: emi-A4503753
+zmaster_instance_type: m1.medium
+
+# FrontEnd instance settings
+zfront_az: az01
+zfront_emi: emi-A4503753
+zfront_instance_type: m1.medium

@@ -1,0 +1,19 @@
+# Playbook servers
+#
+# You should enter only 1 Master and 1 MySQL Server unless you setup HA beyond this
+#
+#
+
+[zabbix-master]
+127.0.0.1
+
+[mysql-server]
+127.0.0.1
+
+[zabbix-proxy]
+
+[zabbix-hosts]
+
+[zabbix-frontend]
+127.0.0.1
+

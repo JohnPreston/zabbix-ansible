@@ -1,0 +1,25 @@
+# Install and configure the zabbix agent to the server
+
+- name: Install zabbix agent
+  yum: pkg={{ item }} state=latest
+  with_items:
+  - zabbix22
+  - zabbix22-agent
+
+- name: Get servers hostname
+  shell: hostname
+  register: host_name
+
+- name: Configure the zabbix daemon agent file
+  lineinfile: regexp={{ item.name }} line={{ item.line }} dest=/etc/zabbix_agentd.conf
+  with_items:
+  - {'name': "Server", 'line': "Server={{ hostvars[groups['zabbix-master'][0]]['ansible_eth0']['ipv4']['address'] }}"}
+  - {'name': "ServerActive", 'line': "ServerActive={{ hostvars[groups['zabbix-master'][0]]['ansible_eth0']['ipv4']['address'] }}"}
+  - {'name': "Hostname", 'line': "Hostname={{ host_name.stdout }}"}
+  - {'name': "EnableRemoteCommands", 'line': "EnableRemoteCommands=1"}
+  notify:
+  - restart zabbixa
+  - restart zabbix
+  ignore_errors: True
+
+

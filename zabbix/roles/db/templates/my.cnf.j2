@@ -1,0 +1,14 @@
+{% set iface = 'ansible_' + mysql_nic %}
+{% set conf = hostvars[inventory_hostname][iface] %}
+
+[mysqld]
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+user=mysql
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+bind-address={{ conf.ipv4.address }}
+
+[mysqld_safe]
+log-error=/var/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid

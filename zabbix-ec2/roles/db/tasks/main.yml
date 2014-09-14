@@ -1,0 +1,22 @@
+# MySQL Server backend
+
+- name: Install MySQL Server
+  yum: pkg=mysql-server state=latest
+
+- name: Enable run on start
+  shell: chkconfig mysqld on
+
+- name: First start mysql server to initialize it
+  service: name=mysqld state=restarted
+
+- name: Configure mysql server
+  template: src=my.cnf.j2 dest=/etc/my.cnf
+
+- name: Restart mysqld server
+  service: name=mysqld state=restarted
+
+- name: create the zabbix database
+  mysql_db: name={{ mysql_database }} state=present
+
+- name: create zabbix user
+  mysql_user: name={{ mysql_username }} password={{ mysql_password }} priv={{ mysql_database }}.*:ALL state=present host='%'
