@@ -2,21 +2,28 @@
 
 - name: Install MySQL Server
   yum: pkg=mysql-server state=latest
+  tags: db_setup
 
 - name: Enable run on start
   shell: chkconfig mysqld on
+  tags: db_setup
 
 - name: First start mysql server to initialize it
   service: name=mysqld state=restarted
+  tags: db_setup
 
 - name: Configure mysql server
   template: src=my.cnf.j2 dest=/etc/my.cnf
+  tags: db_setup
 
 - name: Restart mysqld server
   service: name=mysqld state=restarted
+  tags: db_setup
 
 - name: create the zabbix database
   mysql_db: name={{ mysql_database }} state=present
+  tags: db_setup
 
 - name: create zabbix user
   mysql_user: name={{ mysql_username }} password={{ mysql_password }} priv={{ mysql_database }}.*:ALL state=present host='%'
+  tags: db_setup
