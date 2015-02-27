@@ -1,7 +1,7 @@
 # Master Zabbix server setup
 
 - name: Setup zabbix
-  yum: pkg={{ item }} state=latest
+  yum: pkg={{ item }} state=latest enablerepo=epel
   with_items:
   - zabbix22
   - zabbix22-server-mysql

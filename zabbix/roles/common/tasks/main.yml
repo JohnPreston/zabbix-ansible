@@ -4,6 +4,10 @@
   yum: pkg=ntp state=latest
   tags: common
 
+- name: setup EPEL
+  yum: pkg=http://downloads.eucalyptus.com/software/eucalyptus/4.0/centos/6/x86_64/epel-release-6.noarch.rpm state=present
+  tags: common
+
 - name: enable ntp on boot
   shell: chkconfig ntpd on
   tags: common
