@@ -2,12 +2,16 @@
 
 - name: setup NTP
   yum: pkg=ntp state=latest
+  tags: common
 
 - name: enable ntp on boot
   shell: chkconfig ntpd on
+  tags: common
 
 - name: template ntp config file
   template: src=ntp.j2 dest=/etc/ntp.conf
+  tags: common
 
 - name: start NTPD service
   service: name=ntpd state=restarted
+  tags: common

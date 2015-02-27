@@ -2,15 +2,19 @@
 
 - name: setup NTP
   yum: pkg=ntp state=latest
+  tags: common_db
 
 - name: enable ntp on boot
   shell: chkconfig ntpd on
+  tags: common_db
 
 - name: template ntp config file
   template: src=ntp.j2 dest=/etc/ntp.conf
+  tags: common_db
 
 - name: start NTPD service
   service: name=ntpd state=restarted
+  tags: common_db
 
 - name: Setup mysql-python
   yum: pkg={{ item }} state=latest
@@ -18,3 +22,4 @@
   - MySQL-python
   - python-pip
   - mysql
+  tags: common_db
