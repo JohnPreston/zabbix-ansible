@@ -1,7 +1,9 @@
 # Handlers
 
 - name: restart zabbixa
+  sudo: yes
   service: name=zabbix-agentd state=restarted
 
 - name: restart zabbix
+  sudo: yes
   service: name=zabbix-agent state=restarted

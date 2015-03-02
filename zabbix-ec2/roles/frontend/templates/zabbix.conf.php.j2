@@ -3,7 +3,7 @@
 global $DB;
 
 $DB['TYPE']     = 'MYSQL';
-$DB['SERVER']   = '{{ hostvars[groups['ec2_mysql'][0]]['ansible_eth0']['ipv4']['address'] }}';
+$DB['SERVER']   = '{{ hostvars[groups['mysql-server'][0]]['ansible_eth0']['ipv4']['address'] }}';
 $DB['PORT']     = '0';
 $DB['DATABASE'] = '{{ mysql_database  }}';
 $DB['USER']     = '{{ mysql_username }}';
@@ -12,7 +12,7 @@ $DB['PASSWORD'] = '{{ mysql_password }}';
 // SCHEMA is relevant only for IBM_DB2 database
 $DB['SCHEMA'] = '';
 
-$ZBX_SERVER      = '{{ hostvars[groups['ec2_zmaster'][0]]['ansible_eth0']['ipv4']['address'] }}';
+$ZBX_SERVER      = '{{ hostvars[groups['zabbix-master'][0]]['ansible_eth0']['ipv4']['address'] }}';
 $ZBX_SERVER_PORT = '10051';
 $ZBX_SERVER_NAME = '{{ zabbix_master_name }}';
 

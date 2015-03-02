@@ -2,6 +2,7 @@
 
 - name: Setup zabbix
   yum: pkg={{ item }} state=latest enablerepo=epel
+  sudo: yes
   with_items:
   - zabbix22
   - zabbix22-server-mysql
@@ -15,9 +16,10 @@
   - /usr/share/zabbix-mysql/images.sql
   - /usr/share/zabbix-mysql/data.sql
   ignore_errors: yes
-  
+
 - name: Update the configuration file with the mysql settings
   lineinfile: regexp={{ item.name }} line={{ item.line }} dest=/etc/zabbix_server.conf
+  sudo: yes
   with_items:
   - {'name': "DBHost", 'line': "DBHost={{ hostvars[groups['mysql-server'][0]]['ansible_eth0']['ipv4']['address'] }}"}
   - {'name': "DBName", 'line': 'DBName={{ mysql_database }}'}
@@ -27,4 +29,5 @@
   - restart zabbixd
 
 - name: Starting zabbixd
+  sudo: yes
   service: name=zabbix-server state=started

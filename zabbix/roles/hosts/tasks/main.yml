@@ -2,6 +2,7 @@
 
 - name: Install zabbix agent
   yum: pkg={{ item }} state=latest
+  sudo: yes
   with_items:
   - zabbix22
   - zabbix22-agent
@@ -12,6 +13,7 @@
 
 - name: Configure the zabbix daemon agent file
   lineinfile: regexp={{ item.name }} line={{ item.line }} dest=/etc/zabbix_agentd.conf
+  sudo: yes
   with_items:
   - {'name': "Server", 'line': "Server={{ hostvars[groups['zabbix-master'][0]]['ansible_eth0']['ipv4']['address'] }}"}
   - {'name': "ServerActive", 'line': "ServerActive={{ hostvars[groups['zabbix-master'][0]]['ansible_eth0']['ipv4']['address'] }}"}
@@ -21,5 +23,3 @@
   - restart zabbixa
   - restart zabbix
   ignore_errors: True
-
-

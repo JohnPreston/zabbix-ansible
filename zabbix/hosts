@@ -5,15 +5,14 @@
 #
 
 [zabbix-master]
-127.0.0.1
+localhost ansible_connection=local
 
 [mysql-server]
-127.0.0.1
+localhost ansible_connection=local
 
 [zabbix-proxy]
 
 [zabbix-hosts]
 
 [zabbix-frontend]
-127.0.0.1
-
+localhost ansible_connection=local

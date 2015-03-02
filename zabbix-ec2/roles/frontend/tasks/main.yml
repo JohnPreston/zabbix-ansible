@@ -1,19 +1,23 @@
 # Setup the Zabbix Front-End
 
 - name: Install Zabbix-Frontend
-  yum: pkg={{ item }} state=latest
+  yum: pkg={{ item }} state=latest enablerepo=epel
+  sudo: yes
   with_items:
   - zabbix22
   - zabbix22-web-mysql
 
 - name: HTTPD autostart
+  sudo: yes
   shell: chkconfig httpd on
 
 - name: Start Frontend
   service: name=httpd state=restarted
+  sudo: yes
 
 - name: Update php.ini config for Zabbix frontend
   lineinfile: regexp={{ item.name }} line={{ item.line }} dest=/etc/php.ini
+  sudo: yes
   with_items:
   - {'name': ";date.timezone", 'line': "date.timezone={{ front_php_timezone }}"}
   - {'name': "post_max_size", 'line': "post_max_size={{ front_php_post_max_size }}"}
@@ -23,4 +27,5 @@
   - restart httpd
 
 - name: Configure frontend
+  sudo: yes
   template: src=zabbix.conf.php.j2 dest=/etc/zabbix/web/zabbix.conf.php owner=apache group=apache

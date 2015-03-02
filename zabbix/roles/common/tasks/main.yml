@@ -2,20 +2,25 @@
 
 - name: setup NTP
   yum: pkg=ntp state=latest
+  sudo: yes
   tags: common
 
 - name: setup EPEL
   yum: pkg=http://downloads.eucalyptus.com/software/eucalyptus/4.0/centos/6/x86_64/epel-release-6.noarch.rpm state=present
+  sudo: yes
   tags: common
 
 - name: enable ntp on boot
   shell: chkconfig ntpd on
+  sudo: yes
   tags: common
 
 - name: template ntp config file
   template: src=ntp.j2 dest=/etc/ntp.conf
+  sudo: yes
   tags: common
 
 - name: start NTPD service
   service: name=ntpd state=restarted
+  sudo: yes
   tags: common

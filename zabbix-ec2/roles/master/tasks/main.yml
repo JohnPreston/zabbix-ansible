@@ -1,7 +1,8 @@
 # Master Zabbix server setup
 
 - name: Setup zabbix
-  yum: pkg={{ item }} state=latest
+  yum: pkg={{ item }} state=latest enablerepo=epel
+  sudo: yes
   with_items:
   - zabbix22
   - zabbix22-server-mysql
@@ -9,17 +10,18 @@
   - zabbix22-agent
 
 - name: Init database
-  mysql_db: login_host={{ hostvars[groups['ec2_mysql'][0]]['ansible_eth0']['ipv4']['address'] }} login_user={{ mysql_username }} login_password={{ mysql_password }} name={{ mysql_database }} state=import target={{ item }}
+  mysql_db: login_host={{ hostvars[groups['mysql-server'][0]]['ansible_eth0']['ipv4']['address'] }} login_user={{ mysql_username }} login_password={{ mysql_password }} name={{ mysql_database }} state=import target={{ item }}
   with_items:
   - /usr/share/zabbix-mysql/schema.sql
   - /usr/share/zabbix-mysql/images.sql
   - /usr/share/zabbix-mysql/data.sql
   ignore_errors: yes
-  
+
 - name: Update the configuration file with the mysql settings
   lineinfile: regexp={{ item.name }} line={{ item.line }} dest=/etc/zabbix_server.conf
+  sudo: yes
   with_items:
-  - {'name': "DBHost", 'line': "DBHost={{ hostvars[groups['ec2_mysql'][0]]['ansible_eth0']['ipv4']['address'] }}"}
+  - {'name': "DBHost", 'line': "DBHost={{ hostvars[groups['mysql-server'][0]]['ansible_eth0']['ipv4']['address'] }}"}
   - {'name': "DBName", 'line': 'DBName={{ mysql_database }}'}
   - {'name': "DBUser", 'line': 'DBUser={{ mysql_username }}'}
   - {'name': "DBPassword", 'line': 'DBPassword={{ mysql_password }}'}
@@ -27,4 +29,5 @@
   - restart zabbixd
 
 - name: Starting zabbixd
+  sudo: yes
   service: name=zabbix-server state=started
